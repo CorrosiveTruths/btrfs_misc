@@ -1,2 +1,2 @@
 # btrfs_misc
-Miscellaeneous tools for brtfs
+Miscellaneous tools for brtfs
