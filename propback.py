@@ -141,9 +141,9 @@ if len(paths) > 1:
         elif args.actual:
             subprocess.run(['btrfs', 'sub', 'snap', '-r',
                            child, child+'.propback'])
-    if len(ignored) > 0:
-        for line in ignored:
-            print('Ignored', line)
+    # if len(ignored) > 0:
+        # for line in ignored:
+            # print('Ignored', line)
     if args.actual:
         for line in delete_snaps:
             subprocess.run(['btrfs', 'sub', 'del', line])
