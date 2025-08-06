@@ -17,4 +17,4 @@ This will run through the snapshots and return how many files are being compared
 
 Running with -a will create an alternative set of snapshots appended with .propback and propagate (reflink from the newer to the older, then copy attributes from the original) matching files backwards through that created set, with sttributes copied from the original snapshot, not touching the original ones at all, only the copies. Running something like compsize on the original set and then the .propback set should show less disk usage & fewer extents (if files have been defragged at least).
 
-This script is largely a proof of concept for the approach. Check the results before keeping the created snaoshots or replacing the originals.
+This script is largely a proof of concept for the approach. Check the results before keeping the created snapshots or replacing the originals.
