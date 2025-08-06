@@ -15,6 +15,6 @@ Just reverse sorting with sort -r will work with other schemes that name the sna
 
 This will run through the snapshots and return how many files are being compared, how many matched, and how much space in extents are being updated.
 
-Running with -a will create an alternative set of snapshots appended with .propback and propagate matching files backwards through that created set, with sttributes copied from the original snaoshot, not touching the original ones at all, only the copies. Running something like compsize on the original set and then the .propback set should show less disk usage & fewer extents (if files have been defragged at least).
+Running with -a will create an alternative set of snapshots appended with .propback and propagate matching files backwards through that created set, with sttributes copied from the original snapshot, not touching the original ones at all, only the copies. Running something like compsize on the original set and then the .propback set should show less disk usage & fewer extents (if files have been defragged at least).
 
-This script is largely a proof of concept for the approach.
+This script is largely a proof of concept for the approach. Check the results before keeping the created snaoshots or replacing the originals.
