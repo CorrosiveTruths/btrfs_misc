@@ -98,7 +98,7 @@ if len(paths) > 1:
         miss = 0
         hit_sz = 0
         miss_sz = 0
-        for line in sentfiles:
+        for line in set(sentfiles): # Cludge to kill dupes, figure out where those are coming from
             if args.actual:
                 left = parent+'.propback' + \
                     os.path.normpath(line[1].replace(s_path, '', 1))
