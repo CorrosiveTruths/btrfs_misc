@@ -14,7 +14,8 @@ parser.add_argument('snaps', nargs='*',
                     help='snapshots to run through in order')
 parser.add_argument(
     "-a", "--actual", help='create alternative snapshot timeline.propback', action='store_true')
-# parser.add_argument('-d', '--debug', help = 'debug mode', action='store_true')
+parser.add_argument('-d', '--debug', help = 'debug mode', action='store_true')
+parser.add_argument("-s", "--size", nargs='?', default=1024, type=int, help='changes over this size match in KiB (default: 1024)')
 # Default
 # parser.add_argument('-n', '--dry-run', help = "don't actually make the changes", action='store_true')
 args = parser.parse_args()
@@ -85,13 +86,14 @@ if len(paths) > 1:
                         else:
                             sentfiles[-1] = ((sentfiles[-1][0],
                                              sentfiles[-1][1], int(x_len)))
-                    else:
+                    elif int(x_len) > args.size * 1024:
                         # Ugh
                         sentfiles.append((splitline[0], x_path[0].rstrip().replace('\\ ', '\\\\ ').encode(
                             'latin-1').decode('unicode-escape').encode('latin-1').decode('utf-8').replace('\\ ', ' '), int(x_len)))
                     # total += int(x_len)
         # for line in sentfiles: print(*line)
-
+        #if args.debug:
+            #print(len(sentfiles), len(set(sentfiles)))
         if len(sentfiles) > 0:
             print('Comparing', len(sentfiles), 'file(s)')
         hit = 0
@@ -111,7 +113,7 @@ if len(paths) > 1:
             elif os.path.exists(left) == False:
                 miss += 1
                 miss_sz += line[2]
-            elif filecmp.cmp(left, right, shallow=True):  # Make tunable?
+            elif filecmp.cmp(left, right, shallow=True):
                 hit += 1
                 hit_sz += line[2]
                 all_hit += 1
@@ -122,6 +124,8 @@ if len(paths) > 1:
                 miss += 1
                 miss_sz += line[2]
         if hit > 0:
+            if args.debug:
+                for line in matches: print(line)
             if args.actual:
                 subprocess.run(
                     ['btrfs', 'sub', 'snap', child, child+'.propback.rw'])
@@ -141,9 +145,10 @@ if len(paths) > 1:
         elif args.actual:
             subprocess.run(['btrfs', 'sub', 'snap', '-r',
                            child, child+'.propback'])
-    # if len(ignored) > 0:
-        # for line in ignored:
-            # print('Ignored', line)
+    if args.debug:
+        if len(ignored) > 0:
+            for line in ignored:
+                print('Not found', line)
     if args.actual:
         for line in delete_snaps:
             subprocess.run(['btrfs', 'sub', 'del', line])
